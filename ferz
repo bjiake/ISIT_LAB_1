@@ -1,0 +1,75 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+int cnt = 0;
+
+void printBoard(int* ar){//Вывод доски
+    int i, j;
+    
+    for (i = 0; i < 8; ++i){
+        for(j = 0; j < 8; ++j){
+            if(ar[j] == i){
+                cout <<"F ";
+            }
+            else{
+                cout << ". ";
+            }
+        }
+    cout << endl;
+    }
+}
+
+int check (int* ar){//Проверка
+    int i, j;
+    
+    for(i = 0; i < 7; ++i){
+        for(j = i + 1; j < 8; ++j){
+            if(ar[i] - i == ar[j] - j || ar[i] + i == ar[j] + j){
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+void solve(int* ar, int n = 0){
+    int i;
+    
+    if(n == 7){
+        if(check(ar) == 1){
+            ++cnt;
+            cout << endl << "Вариант №"<< cnt << endl;
+            if(cnt != 0){
+               printBoard(ar); 
+            }
+        }
+    }
+    else{
+        solve(ar, n + 1);
+        for(i = n + 1; i < 8; ++i){
+            swap(ar[n],ar[i]);
+            solve(ar, n + 1);
+            swap(ar[n], ar[i]);
+        }
+    }
+}
+
+void swap (int* a, int* b){
+    int tmp;
+    
+    tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+int main(){
+    int arr[]={0, 1, 2, 3, 4, 5, 6, 7};//Шахматная строка
+    
+    cout << "Вариант №"<< endl;
+    printBoard(arr);
+    solve(arr);
+    cout << endl << "Всего вариатов:" << cnt << endl;
+    return 0;
+}
